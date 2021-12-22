@@ -18,6 +18,7 @@ void mapPlayToBoard(int play, Player *coords);
 void submitPlayerInput(int board[BOARD_HEIGHT][BOARD_WIDTH], Player coords);
 void switchPlayer(Player *coords);
 int checkForWinCondition(int board[BOARD_HEIGHT][BOARD_WIDTH], Player coords);
+int freeBoardIndex(int board[BOARD_HEIGHT][BOARD_WIDTH], Player coords);
 
 int main()
 {
@@ -32,8 +33,12 @@ int main()
     {
         drawBoard(board);
 
-        play = getPlayerInput();
-        mapPlayToBoard(play, &coords);
+        do{
+            play = getPlayerInput();
+            mapPlayToBoard(play, &coords);
+        }
+        while(!freeBoardIndex(board, coords));
+
         submitPlayerInput(board, coords);
         numberOfPlays++;
 
@@ -147,7 +152,6 @@ void mapPlayToBoard(int play, Player *coords)
 void submitPlayerInput(int board[BOARD_HEIGHT][BOARD_WIDTH], Player coords)
 {
     board[coords.x][coords.y] = coords.player;
-    printf("%d\n", board[coords.x][coords.y]);
     return;
 }
 
@@ -186,5 +190,11 @@ int checkForWinCondition(int board[BOARD_HEIGHT][BOARD_WIDTH], Player coords)
 
     return -1;
 
+}
+
+int freeBoardIndex(int board[BOARD_HEIGHT][BOARD_WIDTH], Player coords)
+{
+    if(board[coords.x][coords.y] == 0 || board[coords.x][coords.y] == 1) return 0;
+    else return 1;
 }
 
